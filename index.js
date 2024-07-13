@@ -1,5 +1,6 @@
 import express from "express"
-
+import dotenv from "dotenv"
+dotenv.config()
 
 
 const app = express()
@@ -109,8 +110,13 @@ app.put("/plant/:id", (req, res) => {
     })
 })
 
-
-const PORT = 5000
+app.use("*" , (req,res) =>{
+    res.send( `<div>\
+        <h1> 404 not found </h1>
+        </div>`
+    )
+})
+const PORT = process.env.PORT
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`)
