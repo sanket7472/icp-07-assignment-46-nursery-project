@@ -2,120 +2,33 @@ import express from "express"
 import dotenv from "dotenv"
 dotenv.config()
 
-
+import { getHealth, showError } from "./controllers/health.js"
+import {
+    postPlant,
+    getPlants,
+    getPlantById,
+    deletePlant,
+    updatePlant
+} from "./controllers/plant.js"
 const app = express()
 app.use(express.json())
 
 const plants = []
+app.get("/health", getHealth)
 
-app.post("/plant", (req, res) => {
-    const
-        {
-            name,
-            category,
-            image,
-            price,
-            description
-        } = req.body
+app.post("/plant", postPlant)
 
-    if (!name) {
-        return res.json({
-            success: true,
-            data: null,
-            message: "Name is required"
-        })
-    }
-    const randomId = Math.round(Math.random() * 10000)
+app.get("/plant", getPlants)
 
-    const newPlant = (
-        id = randomId,
-        name = name,
-        category = category,
-        image = image,
-        price = price,
-        description = description
+app.get("/plant/:id", getPlantById)
 
-    )
+app.delete("/plant/:id", deletePlant)
 
-    plants.push(newPlant)
+app.put("/plant/:id", updatePlant)
 
-    res.json({
-        success: true,
-        data: newPlant,
-        message: "plant added successfully",
+app.use("*", showError)
 
-    })
 
-})
-app.get("/plant", (req, res) => {
-    res.json({
-        success: true,
-        data: plants,
-        message: "plants fetched successfully",
-    })
-})
-app.get("/plant/:id", (req, res) => {
-    const { id } = req.params
-    const plant = plants.find((plant) => plant.id === id)
-    if (!plant) {
-        return res.json({
-            success: false,
-            data: null,
-            message: "plant not found",
-        })
-    }
-    res.json({
-        success: true,
-        data: plant,
-        message: "plant fetched successfully",
-    })
-})
-app.delete("/plant/:id", (req, res) => {
-    const { id } = req.params
-    const plantIndex = plants.findIndex((plant) => plant.id === id)
-    if (plantIndex === -1) {
-        return res.json({
-            success: false,
-            data: null,
-            message: "plant not found",
-        })
-    }
-    plants.splice(plantIndex, 1)
-    res.json({
-        success: true,
-        data: plants,
-        message: "plant deleted successfully",
-    })
-})
-app.put("/plant/:id", (req, res) => {
-    const { id } = req.params
-    const { name, category, image, price, description,
-    } = req.body
-    const plantIndex = plants.findIndex((plant) => plant.id === id)
-    if (plantIndex === -1) {
-        return res.json({
-            success: false,
-            data: null,
-            message: "plant not found",
-        })
-    }
-    plants[plantIndex] = {
-        ...plants[plantIndex], name, category, image,
-        price, description
-    }
-    res.json({
-        success: true,
-        data: plants,
-        message: "plant updated successfully",
-    })
-})
-
-app.use("*" , (req,res) =>{
-    res.send( `<div>\
-        <h1> 404 not found </h1>
-        </div>`
-    )
-})
 const PORT = process.env.PORT
 
 app.listen(PORT, () => {
