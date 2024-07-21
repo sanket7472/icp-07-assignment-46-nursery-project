@@ -1,6 +1,7 @@
 import express from "express"
 import dotenv from "dotenv"
 dotenv.config()
+import mongoose from "mongoose"
 
 import { getHealth, showError } from "./controllers/health.js"
 import {
@@ -12,6 +13,18 @@ import {
 } from "./controllers/plant.js"
 const app = express()
 app.use(express.json())
+
+const dbConnection = async () => {
+    const conn = await mongoose.connect (process.env.DB_URL)
+    if (conn){
+    console.log("Connected to MongoDB")
+    }
+    else{
+         console.log('MongoDB not Connected')
+    }
+
+}
+dbConnection()
 
 const plants = []
 app.get("/health", getHealth)
