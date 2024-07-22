@@ -1,4 +1,9 @@
-const postPlant = (req, res) => {
+import Plant from "../models/plant"
+
+
+
+
+const postPlant = async (req, res) => {
     const
         {
             name,
@@ -8,35 +13,28 @@ const postPlant = (req, res) => {
             description
         } = req.body
 
-    if (!name) {
-        return res.json({
-            success: true,
-            data: null,
-            message: "Name is required"
-        })
+  
     }
-    const randomId = Math.round(Math.random() * 10000)
 
-    const newPlant = (
-        id = randomId,
-        name = name,
-        category = category,
-        image = image,
-        price = price,
-        description = description
+ const newPlant = new Plant({
+    name: name ,
+    category:category,
+    image:image,
+    price:price,
+    description:description
 
-    )
 
-    plants.push(newPlant)
+ })
+    const savedPlants = await newPlant.save();
 
     res.json({
         success: true,
-        data: newPlant,
+        data: savedPlants,
         message: "plant added successfully",
 
     })
 
-}
+
 
 const getPlants = (req, res) => {
     res.json({
