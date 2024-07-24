@@ -1,110 +1,112 @@
-import Plant from "../models/plant"
-
-
+import Plant from "./../models/Plant.js";
 
 
 const postPlant = async (req, res) => {
-    const
-        {
-            name,
-            category,
-            image,
-            price,
-            description
-        } = req.body
+    const {
+        plantname,
+        category,
+        image,
+        price,
+        description
+    } = req.body
 
-  
-    }
+    const newPlant = new Plant({
+        plantname: plantname,
+        category: category,
+        image: image,
+        price: price,
+        description: description
+    });
 
- const newPlant = new Plant({
-    name: name ,
-    category:category,
-    image:image,
-    price:price,
-    description:description
-
-
- })
-    const savedPlants = await newPlant.save();
+    const savedPlant = await newPlant.save();
+   /* plants.push(savedPlant); // Add the new plant to the plants array*/
 
     res.json({
         success: true,
-        data: savedPlants,
+        data: savedPlant,
         message: "plant added successfully",
+    });
+}
 
-    })
+const getPlants = async(req, res) => {
 
-
-
-const getPlants = (req, res) => {
+    const allPlants = await Plant.find()
     res.json({
         success: true,
-        data: plants,
+        data: allPlants,
         message: "plants fetched successfully",
-    })
+    });
 }
- 
-const getPlantById = (req, res) => {
-    const { id } = req.params
-    const plant = plants.find((plant) => plant.id === id)
+
+const getPlantById = async (req, res) => {
+    const { id } = req.params;
+    const plant = await Plant.findById ( id )
     if (!plant) {
         return res.json({
             success: false,
             data: null,
             message: "plant not found",
-        })
+        });
     }
     res.json({
         success: true,
         data: plant,
         message: "plant fetched successfully",
-    })
+    });
 }
 
-const deletePlant = (req, res) => {
-    const { id } = req.params
-    const plantIndex = plants.findIndex((plant) => plant.id === id)
-    if (plantIndex === -1) {
-        return res.json({
-            success: false,
-            data: null,
-            message: "plant not found",
-        })
-    }
-    plants.splice(plantIndex, 1)
+const deletePlant = async (req, res) => {
+    const { id } = req.params;
+  await Plant.deleteOne({
+    _id: id
+   })
     res.json({
         success: true,
-        data: plants,
+        data: null,
         message: "plant deleted successfully",
-    })
+    });
 }
 
-const updatePlant = (req, res) => {
-    const { id } = req.params
-    const { name, category, image, price, description,
-    } = req.body
-    const plantIndex = plants.findIndex((plant) => plant.id === id)
-    if (plantIndex === -1) {
+const updatePlant = async (req, res) => {
+    const { id } = req.params;
+    const {
+         plantname, 
+         category, 
+         image, 
+         price,
+         description } = req.body;
+
+ const updateResult = await Plant.updateOne ({id:id},
+    {
+        $set: {
+            plantname: plantname,
+            category: category,
+            image: image,
+            price: price,
+            description: description
+    }
+}
+ )
+ const updatedPlant = Plant.findById (id)
+ 
         return res.json({
             success: false,
             data: null,
             message: "plant not found",
-        })
-    }
-    plants[plantIndex] = {
-        ...plants[plantIndex], name, category, image,
-        price, description
-    }
+        });
+    
+   
     res.json({
         success: true,
-        data: plants,
+        data: updatedPlant,
         message: "plant updated successfully",
-    })
+    });
 }
+
 export {
-    postPlant ,
-    getPlants ,
-    getPlantById ,
-    deletePlant , 
+    postPlant,
+    getPlants,
+    getPlantById,
+    deletePlant,
     updatePlant
 }
