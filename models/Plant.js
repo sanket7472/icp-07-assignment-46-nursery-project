@@ -1,11 +1,12 @@
-import { Schema , model } from "mongoose";
+import { Schema, model } from "mongoose"
+import mongoose from 'mongoose';
 
 
 const plantSchema = new Schema({
 
     plantname : String,
     category: String,
-    image: String,
+    image:String,
     price: Number,
     description: String,
 

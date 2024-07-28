@@ -19,7 +19,7 @@ const postPlant = async (req, res) => {
     });
 
     const savedPlant = await newPlant.save();
-   /* plants.push(savedPlant); // Add the new plant to the plants array*/
+
 
     res.json({
         success: true,
@@ -110,3 +110,29 @@ export {
     deletePlant,
     updatePlant
 }
+
+
+
+
+/* {
+            plants.map((plant, i) => {
+                const {
+                    _id,
+                    plantname,
+                    category,
+                    image,
+                    price,
+                    description
+                } = plant
+                return (<PlantCard
+                    key={i}
+                    _id={_id}
+                    plantname={plantname}
+                    category={category}
+                    image={image}
+                    price={price}
+                    description={description}
+                />)
+            })
+
+        }*/

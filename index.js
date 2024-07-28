@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 dotenv.config()
 import mongoose from "mongoose"
 import axios from 'axios'
+import cors from 'cors'
 import toast from 'react-hot-toast'
 import { Link } from 'react-router-dom'
 
@@ -15,6 +16,7 @@ import {
     updatePlant
 } from "./controllers/plant.js"
 const app = express()
+app.use(cors())
 app.use(express.json())
 
 const dbConnection = async () => {
