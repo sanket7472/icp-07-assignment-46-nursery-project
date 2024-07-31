@@ -31,7 +31,7 @@ const dbConnection = async () => {
 }
 dbConnection()
 
-const plants = []
+// const plants = []
 app.get("/health", getHealth)
 
 app.post("/plant", postPlant)

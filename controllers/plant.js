@@ -113,26 +113,3 @@ export {
 
 
 
-
-/* {
-            plants.map((plant, i) => {
-                const {
-                    _id,
-                    plantname,
-                    category,
-                    image,
-                    price,
-                    description
-                } = plant
-                return (<PlantCard
-                    key={i}
-                    _id={_id}
-                    plantname={plantname}
-                    category={category}
-                    image={image}
-                    price={price}
-                    description={description}
-                />)
-            })
-
-        }*/
